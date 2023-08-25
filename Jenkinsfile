@@ -18,23 +18,20 @@ pipeline {
         }
     }}
 
-        stage('Terraform Apply') {
+        stage('Terraform run') {
             steps {
                 script {
-                    def terraformExecutable = 'terraform'
+                    sh "terraform init"
 
-                    dir('path/to/terraform/code') {
-                        sh "${terraformExecutable} init"
-
-                        withAWS(credentials: [
-                            awsAccessKeyIdVariable: 'AWS_ACCESS_KEY_ID',
-                            awsSecretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
-                            regionVariable: 'AWS_DEFAULT_REGION'
-                        ]) {
-                            sh "${terraformExecutable} plan"
-                            // sh "${terraformExecutable} apply -auto-approve"
-                        }
+                    withAWS(credentials: [
+                        awsAccessKeyIdVariable: 'AWS_ACCESS_KEY_ID',
+                        awsSecretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
+                        regionVariable: 'AWS_DEFAULT_REGION'
+                    ]) {
+                        sh "terraform plan"
+                        // sh "terraform apply -auto-approve"
                     }
+                    
                 }
             }
         }
