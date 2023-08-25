@@ -10,9 +10,9 @@ pipeline {
     stages {
         stage('Checkout external proj') {
         steps {
-            git branch: 'my_specific_branch',
-                credentialsId: 'gitscm',
-                url: 'https://github.com/Indu1234/k8sclusterTF.git'
+            checkout scmGit(
+            branches: [[name: 'master']],
+            userRemoteConfigs: [[url: 'https://github.com/Indu1234/k8sclusterTF.git']])
             sh "ls -lat"
             sh "pwd"
         }
