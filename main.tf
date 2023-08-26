@@ -13,7 +13,8 @@ terraform {
     region = "us-east-1"
 
     # For State Locking
-    dynamodb_table = "dev-project1"
+    dynamodb_table = "stateLock"
+    encrypt        = true
   }
 }
 
