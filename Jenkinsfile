@@ -8,7 +8,7 @@ pipeline {
     }
 
     stages {
-        stage('Checkout external proj') {
+        stage('Checkout Terraform project') {
         steps {
             checkout scmGit(
             branches: [[name: 'master']],
@@ -28,8 +28,9 @@ pipeline {
                         awsSecretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
                         regionVariable: 'AWS_DEFAULT_REGION'
                     ]) {
+                        sh "terraform init"
                         sh "terraform plan"
-                        // sh "terraform apply -auto-approve"
+                        sh "terraform apply -auto-approve"
                     }
                     
                 }
