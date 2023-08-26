@@ -1,6 +1,10 @@
 pipeline {
     agent any
-
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('ACCESS_KEY')
+        AWS_SECRET_ACCESS_KEY = credentials('SECRET_ACCESS_KEY')
+        AWS_DEFAULT_REGION = 'us-east-1' // Change this to your desired region
+    }
     stages {
         stage('Checkout external proj') {
             steps {
