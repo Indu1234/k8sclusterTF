@@ -1,9 +1,19 @@
 terraform {
+  required_version = "~> 1.5.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+  }
+  # Adding Backend as S3 for Remote State Storage
+  backend "s3" {
+    bucket = "tf-capgemini-state"
+    key    = "dev/project1/terraform.tfstate"
+    region = "us-east-1"
+
+    # For State Locking
+    dynamodb_table = "dev-project1"
   }
 }
 
@@ -11,24 +21,10 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_key_pair" "my_keypair" {
-  key_name   = "k8s-keypair"
-  public_key = file("~/.ssh/k8s.pub")
-}
 
-locals {
-  instance_names = ["k8s-master", "k8s-node1", "k8s-node2"]
-}
+/*
+Note-1:  AWS Credentials Profile (profile = "default") configured on your local desktop terminal  
+$HOME/.aws/credentials
+*/
 
-resource "aws_instance" "ec2_instance" {
-  count = length(local.instance_names)
-
-  ami           = "ami-053b0d53c279acc90"
-  instance_type = "t2.micro"
-  key_name      = aws_key_pair.my_keypair.key_name
-  subnet_id     = aws_subnet.my_subnet.id
-
-  tags = {
-    Name = local.instance_names[count.index]
-  }
-}
+# Adding Backend as S3 for Remote State Storage
