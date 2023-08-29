@@ -1,5 +1,5 @@
 locals {
-  instance_names = ["k8s-master", "k8s-node1", "k8s-node2"]
+  instance_names = ["webserver"]
 }
 
 resource "aws_instance" "myec2vm" {
