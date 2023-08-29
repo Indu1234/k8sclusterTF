@@ -1,0 +1,15 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout external proj') {
+            steps {
+                checkout scmGit(
+                branches: [[name: 'master']],
+                userRemoteConfigs: [[url: 'https://github.com/spring-projects/spring-petclinic.git']])
+                script {
+                    sh "ls -lat"
+                    sh "pwd"
+                }
+            }
+        }
+    }
